@@ -1,4 +1,5 @@
 "use client"
+import { use } from 'react'
 import { useEffect, useState } from 'react'
 import React from 'react'
 import Link from 'next/link'
@@ -16,8 +17,10 @@ interface PostP{
   userId: number
 }
 
-const Blog = ({params}:{params:{post:number}}) => {
 
+const Blog = ({params}:{params:Promise<{post:string}>}) => {
+
+  const id = use(params)
   const [data, setData] = useState<PostP>();
 
   const [comment, setComment] = useState("");
@@ -31,7 +34,7 @@ const Blog = ({params}:{params:{post:number}}) => {
 
   useEffect(() => {
     async function fetchData(){
-      const datafetching = await fetch(`https://dummyjson.com/posts/${params.post}`);
+      const datafetching = await fetch(`https://dummyjson.com/posts/${id.post}`);
       setData(await datafetching.json());  
     }
     fetchData();
